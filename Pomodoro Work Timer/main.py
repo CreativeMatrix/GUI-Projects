@@ -2,32 +2,45 @@ from tkinter import *
 import math
 from playsound import playsound
 # ---------------------------- CONSTANTS ------------------------------- #
+
 PINK = "#e2979c"
 RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 25
-SHORT_BREAK_MIN = 5
-LONG_BREAK_MIN = 15
+LONG_BREAK_MIN = 30
 REPS = 0
 COUNT_DOWN_TIMER = None
 MARKS = ""
+    
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 def timer_reset():
-    global MARKS, REPS
+    global MARKS, REPS, work_input, break_input
     window.after_cancel(COUNT_DOWN_TIMER)
     canvas.itemconfig(time_watch, text="00:00")
     timer.config(text="Timer")
     MARKS = ""
     checkmark.config(text=MARKS)
     REPS = 0
+    work_input.grid(column=1, row=7)
+    work_input.delete(0, last=50)
+    work_input.insert(0, "Work Mins?")
+    work_input.bind("<FocusIn>", work_text)
+
+    break_input.grid(column=1, row=8)
+    break_input.delete(0, last=50)
+    break_input.insert(0, "Break Mins?")
+    break_input.bind("<FocusIn>", break_text)
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    global REPS
+    global REPS, WORK_MIN, SHORT_BREAK_MIN
+    WORK_MIN = int(work_input.get())
+    SHORT_BREAK_MIN = int(break_input.get())
     REPS += 1
+    work_input.grid_forget()
+    break_input.grid_forget()
 
     if REPS == 1 or REPS == 3 or REPS == 5 or REPS == 7:
             count_down(WORK_MIN * 60)
@@ -60,13 +73,12 @@ def count_down(count):
         for _ in range(work_session):
             MARKS += "✔"
         checkmark.config(text=MARKS, font=(FONT_NAME, 15, "bold")) 
-    
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
 window.title("Pomodoro Work Timer".center(50))
 window.config(padx=100, pady=50, background=YELLOW)
-
 
 timer = Label(text="Timer", font=(FONT_NAME, 35, "bold"), background=YELLOW, foreground=GREEN)
 timer.grid(column=1, row=0)
@@ -85,5 +97,20 @@ reset.grid(column=2, row=5)
 checkmark = Label(background=YELLOW, foreground=GREEN)
 checkmark.grid(column=1, row=6)
 
+def work_text(event):
+   work_input.delete(0,END)
+
+work_input = Entry(width=12)
+work_input.insert(0, "Work Mins?")
+work_input.bind("<FocusIn>", work_text)
+work_input.grid(column=1, row=7)
+
+def break_text(event):
+   break_input.delete(0, END)
+
+break_input = Entry(width=12)
+break_input.insert(0, "Break Mins?")
+break_input.bind("<FocusIn>", break_text)
+break_input.grid(column=1, row=8)
 
 window.mainloop()
