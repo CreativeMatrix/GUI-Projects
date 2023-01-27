@@ -132,4 +132,5 @@ long_break_input.insert(0, "Long Break")
 long_break_input.bind("<FocusIn>", long_break_text)
 long_break_input.grid(column=1, row=9)
 
+
 window.mainloop()
