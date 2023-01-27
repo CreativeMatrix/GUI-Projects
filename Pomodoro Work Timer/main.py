@@ -8,12 +8,10 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-LONG_BREAK_MIN = 30
 REPS = 0
 COUNT_DOWN_TIMER = None
 MARKS = ""
     
-
 # ---------------------------- TIMER RESET ------------------------------- # 
 def timer_reset():
     global MARKS, REPS, work_input, break_input
@@ -23,24 +21,32 @@ def timer_reset():
     MARKS = ""
     checkmark.config(text=MARKS)
     REPS = 0
+
     work_input.grid(column=1, row=7)
     work_input.delete(0, last=50)
-    work_input.insert(0, "Work Mins?")
+    work_input.insert(0, "Work Time")
     work_input.bind("<FocusIn>", work_text)
 
     break_input.grid(column=1, row=8)
     break_input.delete(0, last=50)
-    break_input.insert(0, "Break Mins?")
+    break_input.insert(0, "Short Break")
     break_input.bind("<FocusIn>", break_text)
+
+    long_break_input.grid(column=1, row=9)
+    long_break_input.delete(0, last=50)
+    long_break_input.insert(0, "Long Break")
+    long_break_input.bind("<FocusIn>", long_break_text)
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    global REPS, WORK_MIN, SHORT_BREAK_MIN
+    global REPS, WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
     WORK_MIN = int(work_input.get())
     SHORT_BREAK_MIN = int(break_input.get())
+    LONG_BREAK_MIN = int(long_break_input.get())
     REPS += 1
     work_input.grid_forget()
     break_input.grid_forget()
+    long_break_input.grid_forget()
 
     if REPS == 1 or REPS == 3 or REPS == 5 or REPS == 7:
             count_down(WORK_MIN * 60)
@@ -97,20 +103,30 @@ reset.grid(column=2, row=5)
 checkmark = Label(background=YELLOW, foreground=GREEN)
 checkmark.grid(column=1, row=6)
 
+# ---------------------------- INPUT FIELDS ------------------------------- #
+
 def work_text(event):
    work_input.delete(0,END)
 
-work_input = Entry(width=12)
-work_input.insert(0, "Work Mins?")
+work_input = Entry(window, width=13, validate="key")
+work_input.insert(0, "Work Time")
 work_input.bind("<FocusIn>", work_text)
 work_input.grid(column=1, row=7)
 
 def break_text(event):
    break_input.delete(0, END)
 
-break_input = Entry(width=12)
-break_input.insert(0, "Break Mins?")
+break_input = Entry(width=13)
+break_input.insert(0, "Short Break")
 break_input.bind("<FocusIn>", break_text)
 break_input.grid(column=1, row=8)
+
+def long_break_text(event):
+   long_break_input.delete(0, END)
+
+long_break_input = Entry(width=13)
+long_break_input.insert(0, "Long Break")
+long_break_input.bind("<FocusIn>", long_break_text)
+long_break_input.grid(column=1, row=9)
 
 window.mainloop()
