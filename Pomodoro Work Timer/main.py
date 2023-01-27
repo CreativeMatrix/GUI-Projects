@@ -11,10 +11,13 @@ FONT_NAME = "Courier"
 REPS = 0
 COUNT_DOWN_TIMER = None
 MARKS = ""
-    
+WORK_MIN = 0
+SHORT_BREAK_MIN = 0
+LONG_BREAK_MIN = 0 
+   
 # ---------------------------- TIMER RESET ------------------------------- # 
 def timer_reset():
-    global MARKS, REPS, work_input, break_input
+    global MARKS, REPS, work_input, break_input, long_break_input
     window.after_cancel(COUNT_DOWN_TIMER)
     canvas.itemconfig(time_watch, text="00:00")
     timer.config(text="Timer")
