@@ -1,4 +1,4 @@
 Please make sure to install Playsound version 1.2.2 to get the sound to work.
-Other version will freeze the app. 
+Other versions will freeze the app. 
 
 install cmd: pip install playsound==1.2.2 
